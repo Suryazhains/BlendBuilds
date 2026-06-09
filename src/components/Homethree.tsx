@@ -100,7 +100,7 @@ const HomeThree: React.FC = () => {
           </div>
         </div>
       </section>
-
+//
       {/* ===== FOOTER SECTION ===== */}
       <footer className="w-full bg-[#000000] text-white flex flex-col relative overflow-hidden font-sans">
         
