@@ -6,7 +6,7 @@ import portfolio1 from '../assets/AboutusBack.png';
 import portfolio2 from '../assets/AboutusBack.png';
 import portfolio3 from '../assets/AboutusBack.png';
 
-// Import HomeThree
+// Import HomeThree (Ensure HomeThree.tsx exists in src/components/)
 import HomeThree from './HomeThree';
 
 const HomeTwo: React.FC = () => {
@@ -15,7 +15,9 @@ const HomeTwo: React.FC = () => {
 
   // START AUTO SCROLL
   const startAutoScroll = () => {
-    if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
+    if (autoScrollTimer.current) {
+      window.clearInterval(autoScrollTimer.current);
+    }
     autoScrollTimer.current = window.setInterval(() => {
       scroll('right');
     }, 3000);
@@ -24,7 +26,9 @@ const HomeTwo: React.FC = () => {
   useEffect(() => {
     startAutoScroll();
     return () => {
-      if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
+      if (autoScrollTimer.current) {
+        window.clearInterval(autoScrollTimer.current);
+      }
     };
   }, []);
 
@@ -64,7 +68,9 @@ const HomeTwo: React.FC = () => {
   // MANUAL CLICK HANDLER
   const handleManualScroll = (direction: 'left' | 'right') => {
     // Stop auto-scrolling when user clicks
-    if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
+    if (autoScrollTimer.current) {
+      window.clearInterval(autoScrollTimer.current);
+    }
     
     // Perform the scroll
     scroll(direction);
@@ -107,11 +113,9 @@ const HomeTwo: React.FC = () => {
 
             {/* Overlapping White Text Box */}
             <div className="w-full lg:w-[75%] xl:w-[70%] lg:absolute lg:right-0 lg:top-[12%] bg-white p-12 md:p-20 lg:p-24 z-10 mt-[-40px] lg:mt-0 shadow-sm border border-gray-100">
-              {/* APPLIED: font-grotesk */}
               <h2 className="text-3xl md:text-5xl font-grotesk mb-6 text-black">
                 About Us
               </h2>
-              {/* APPLIED: font-jakarta */}
               <p className="text-gray-500 leading-relaxed text-[15px] md:text-base font-light font-jakarta">
                 We believe in the power of architecture and design to shape the way we 
                 live, work, and interact with the world around us. With a passion for 
@@ -125,21 +129,15 @@ const HomeTwo: React.FC = () => {
           {/* Bottom Part: Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 text-center relative z-10">
             <div className="flex flex-col items-center justify-center py-10 lg:py-12">
-              {/* APPLIED: font-grotesk */}
               <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">3000+</h3>
-              {/* APPLIED: font-jakarta */}
               <p className="text-gray-400 text-sm tracking-wide font-jakarta">Successful Projects</p>
             </div>
             <div className="flex flex-col items-center justify-center py-10 lg:py-12">
-              {/* APPLIED: font-grotesk */}
               <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">2500+</h3>
-              {/* APPLIED: font-jakarta */}
               <p className="text-gray-400 text-sm tracking-wide font-jakarta">Happy Clients</p>
             </div>
             <div className="flex flex-col items-center justify-center py-10 lg:py-12">
-              {/* APPLIED: font-grotesk */}
               <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">100%</h3>
-              {/* APPLIED: font-jakarta */}
               <p className="text-gray-400 text-sm tracking-wide font-jakarta">Clients Satisfactions</p>
             </div>
           </div>
@@ -153,9 +151,7 @@ const HomeTwo: React.FC = () => {
         {/* Portfolio Header & Controls */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 px-4 md:px-6 lg:px-6">
           <div className="max-w-2xl">
-            {/* APPLIED: font-grotesk */}
             <h2 className="text-3xl md:text-5xl font-grotesk mb-4 text-black">Our Portfolio</h2>
-            {/* APPLIED: font-jakarta */}
             <p className="text-gray-500 text-[15px] font-light leading-relaxed font-jakarta">
               Dive into our diverse portfolio of architectural marvels, each a testament 
               to our commitment to innovation, creativity, and excellence.
