@@ -6,8 +6,8 @@ import portfolio1 from '../assets/AboutusBack.png';
 import portfolio2 from '../assets/AboutusBack.png';
 import portfolio3 from '../assets/AboutusBack.png';
 
-// Import HomeThree (Ensure HomeThree.tsx exists in src/components/)
-import HomeThree from './Homethree';
+// Import HomeThree (Ensure the actual file on your disk is named exactly HomeThree.tsx)
+import HomeThree from './HomeThree';
 
 const HomeTwo: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
