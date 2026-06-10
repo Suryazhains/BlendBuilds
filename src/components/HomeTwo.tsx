@@ -88,7 +88,7 @@ const HomeTwo: React.FC = () => {
       <div className="w-full bg-[#f4f5f5] relative">
         
         {/* Subtle Background Vertical Grid Lines */}
-        <div className="absolute inset-0 z-0 flex justify-between px-4 md:px-8 lg:px-12 pointer-events-none opacity-50 max-w-[1440px] mx-auto">
+        <div className="absolute inset-0 z-0 flex justify-between px-6 md:px-16 lg:px-24 pointer-events-none opacity-50">
           <div className="w-px h-full bg-gray-200"></div>
           <div className="w-px h-full bg-gray-200"></div>
           <div className="w-px h-full bg-gray-200"></div>
@@ -96,7 +96,7 @@ const HomeTwo: React.FC = () => {
         </div>
 
         {/* Main Content Container */}
-        <section id="about" className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 pt-24 lg:pt-32 relative z-10">
+        <section id="about" className="px-6 md:px-16 lg:px-24 pt-24 lg:pt-32 relative z-10">
           
           {/* Top Part: Image and Text Box */}
           <div className="relative flex flex-col lg:flex-row items-center justify-start mb-8 lg:mb-10">
@@ -106,7 +106,7 @@ const HomeTwo: React.FC = () => {
               <img 
                 src={about} 
                 alt="About Us Architecture" 
-                className="w-full h-[300px] md:h-[450px] lg:h-[600px] object-cover "
+                className="w-full h-[300px] md:h-[450px] lg:h-[600px] object-cover"
               />
             </div>
 
@@ -145,10 +145,10 @@ const HomeTwo: React.FC = () => {
       </div>
 
       {/* ===== PORTFOLIO SECTION ===== */}
-      <section id="projects" className="max-w-[1420px] mx-auto pt-16 lg:pt-28 pb-20 bg-white relative z-10">
+      <section id="projects" className="pt-16 lg:pt-28 pb-20 bg-white relative z-10">
         
         {/* Portfolio Header & Controls */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 px-4 md:px-6 lg:px-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 px-6 md:px-16 lg:px-24">
           <div className="max-w-2xl">
             <h2 className="text-3xl md:text-5xl font-grotesk mb-4 text-black">Our Portfolio</h2>
             <p className="text-gray-500 text-[15px] font-light leading-relaxed font-jakarta">
@@ -158,7 +158,7 @@ const HomeTwo: React.FC = () => {
           </div>
           
           {/* Arrow Navigation */}
-          <div className="flex items-center space-x-4 flex-shrink-0">
+          <div className="flex items-center space-x-4 flex-shrink-0 mt-6 md:mt-0">
             <button 
               onClick={() => handleManualScroll('left')}
               className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors outline-none focus:outline-none cursor-pointer active:scale-95"
@@ -181,7 +181,7 @@ const HomeTwo: React.FC = () => {
         {/* Horizontal Scroll Container */}
         <div 
           ref={scrollRef}
-          className="flex overflow-x-auto gap-8 pb-8 px-4 md:px-6 lg:px-6"
+          className="flex overflow-x-auto gap-8 pb-8 px-6 md:px-16 lg:px-24"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <style>{`div::-webkit-scrollbar { display: none; }`}</style>
