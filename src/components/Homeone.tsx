@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './Header';
 // 1. Import HomeTwo here
 import HomeTwo from './HomeTwo'; 
-import build from '../assets/building.svg'; 
+import build from '../assets/Building.svg'; 
 
 // Import the service icons
 import service1 from '../assets/service.png';
