@@ -131,7 +131,7 @@ const HomeThree: React.FC = () => {
             <img 
               src={footerBuilder} 
               alt="City Skyline Wireframe" 
-              className="w-full max-w-[500px] object-contain object-bottom translate-y-[1px]" 
+              className="w-full max-w-[700px] object-contain object-bottom translate-y-[1px]" 
             />
           </div>
         </div>

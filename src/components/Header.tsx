@@ -83,7 +83,7 @@ const Header: React.FC = () => {
         }`}
         style={{ paddingTop: '100px', paddingBottom: '30px' }} 
       >
-        <nav className="flex flex-col items-center space-y-6 text-base text-gray-400 font-medium">
+        <nav className="flex flex-col items-center space-y-6 text-base text-gray-400 font-normal">
           <a href="#home" onClick={(e) => scrollToSection(e, 'home')} className="hover:text-white transition-colors duration-300 w-full text-center py-2">Home</a>
           <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-white transition-colors duration-300 w-full text-center py-2">Services</a>
           <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="hover:text-white transition-colors duration-300 w-full text-center py-2">Projects</a>

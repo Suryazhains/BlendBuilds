@@ -92,7 +92,6 @@ const HomeTwo: React.FC = () => {
           <div className="w-px h-full bg-gray-200"></div>
           <div className="w-px h-full bg-gray-200"></div>
           <div className="w-px h-full bg-gray-200"></div>
-          <div className="w-px h-full bg-gray-200"></div>
           <div className="hidden md:block w-px h-full bg-gray-200"></div>
         </div>
 
@@ -146,7 +145,7 @@ const HomeTwo: React.FC = () => {
       </div>
 
       {/* ===== PORTFOLIO SECTION ===== */}
-      <section id="projects" className="max-w-[1540px] mx-auto pt-16 lg:pt-28 pb-20 bg-white relative z-10">
+      <section id="projects" className="max-w-[1420px] mx-auto pt-16 lg:pt-28 pb-20 bg-white relative z-10">
         
         {/* Portfolio Header & Controls */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 px-4 md:px-6 lg:px-6">
