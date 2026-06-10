@@ -49,16 +49,19 @@ const HomeThree: React.FC = () => {
       {/* ===== TESTIMONIALS SECTION ===== */}
       <section className="relative w-full bg-[#F2F1EE] py-24 px-6 md:px-16 lg:px-24 overflow-hidden min-h-[80vh] flex flex-col justify-center border-t border-[#D8D8D8]">
         
-        {/* Background Vertical Grid Lines */}
-        <div className="absolute inset-0 z-0 flex justify-between px-6 md:px-16 lg:px-24 pointer-events-none opacity-100">
-          <div className="w-px h-full bg-[#D8D8D8]"></div>
-          <div className="w-px h-full bg-[#D8D8D8]"></div>
-          <div className="w-px h-full bg-[#D8D8D8]"></div>
-          <div className="w-px h-full bg-[#D8D8D8]"></div>
-          <div className="hidden md:block w-px h-full bg-[#D8D8D8]"></div>
+        {/* Background Vertical Grid Lines - SYNCHRONIZED WITH CONTENT GRID */}
+        {/* Updated to max-w-8xl to match the wider section design */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center px-6 md:px-16 lg:px-24 pointer-events-none">
+          <div className="w-full max-w-8xl h-full flex justify-between">
+            <div className="w-[1px] h-full bg-[#D8D8D8]"></div>
+            <div className="w-[1px] h-full bg-[#D8D8D8]"></div>
+            <div className="w-[1px] h-full bg-[#D8D8D8]"></div>
+            <div className="w-[1px] h-full bg-[#D8D8D8]"></div>
+          </div>
         </div>
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto">
+        {/* Updated to max-w-8xl to sync with the background lines */}
+        <div className="relative z-10 w-full max-w-8xl mx-auto">
           {/* Section Title */}
           {/* APPLIED GLOBAL: font-grotesk */}
           <h2 className="text-4xl md:text-[2.75rem] font-grotesk font-medium text-black mb-10 tracking-tight">
@@ -66,7 +69,8 @@ const HomeThree: React.FC = () => {
           </h2>
 
           {/* Testimonial Card */}
-          <div className="bg-white p-10 md:p-14 lg:p-16 shadow-sm w-full lg:w-[80%] mb-10 border border-gray-100 min-h-[300px] flex flex-col justify-between transition-all duration-500 ease-in-out">
+          {/* lg:w-2/3 perfectly aligns the right edge to the 3rd vertical line in a 3-column grid */}
+          <div className="bg-white p-10 md:p-14 lg:p-16 shadow-sm w-full lg:w-2/3 mb-10 border border-[#E5E5E5] min-h-[300px] flex flex-col justify-between transition-all duration-500 ease-in-out">
             {/* APPLIED GLOBAL: font-jakarta */}
             <p className="text-[#666666] text-[15px] md:text-base leading-[1.8] font-light mb-12 font-jakarta">
               {testimonialsData[currentIndex].text}

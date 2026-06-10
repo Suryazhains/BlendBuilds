@@ -107,12 +107,12 @@ const HomeTwo: React.FC = () => {
               <img 
                 src={about} 
                 alt="About Us Architecture" 
-                className="w-full h-[300px] md:h-[450px] lg:h-[600px] object-cover border-[1.4px] border-black p-0"
+                className="w-full h-[300px] md:h-[450px] lg:h-[600px] object-cover "
               />
             </div>
 
             {/* Overlapping White Text Box */}
-            <div className="w-full lg:w-[75%] xl:w-[70%] lg:absolute lg:right-0 lg:top-[12%] bg-white p-12 md:p-20 lg:p-24 z-10 mt-[-40px] lg:mt-0 shadow-sm border border-gray-100">
+            <div className="w-full lg:w-[75%] xl:w-[70%] lg:absolute lg:right-0 lg:top-[18%] bg-white p-12 md:p-20 lg:p-24 z-10 mt-[-40px] lg:mt-0 shadow-sm border border-gray-100">
               <h2 className="text-3xl md:text-5xl font-grotesk mb-6 text-black">
                 About Us
               </h2>
