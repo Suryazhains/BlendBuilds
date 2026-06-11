@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
-// Import footer assets
-import footerBuilder from '../assets/Footerbg.png'; // Adjust extension if it's a .png
+// IMPORT THE SVG AS A REACT COMPONENT
+import FooterBuilding from '../assets/Footerbg.svg?react'; 
+
 import logo from '../assets/BLEND.png';
 import fbIcon from '../assets/fb.png';
 import igIcon from '../assets/ib.png';
@@ -30,6 +32,65 @@ const HomeThree: React.FC = () => {
   // State to track the active testimonial
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // SCROLL OBSERVER REFS
+  const footerSvgContainerRef = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // STEP 1: The Observer - Just waits for the user to scroll down
+  useEffect(() => {
+    const container = footerSvgContainerRef.current;
+    if (!container || hasAnimated) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true); // Tell React we are ready
+          observer.disconnect(); // Stop observing
+        }
+      },
+      { threshold: 0.2 } 
+    );
+
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // STEP 2: The Drawing Magic
+  useEffect(() => {
+    if (!hasAnimated) return;
+
+    const timer = setTimeout(() => {
+      const container = footerSvgContainerRef.current;
+      const svg = container?.querySelector('.footer-building-svg');
+      if (!svg) return;
+
+      const shapes = svg.querySelectorAll('path, line, polyline, rect, polygon, circle');
+      
+      shapes.forEach((shape, index) => {
+        const element = shape as SVGGeometryElement;
+        
+        const length = element.getTotalLength ? element.getTotalLength() : 1500;
+
+        element.style.strokeDasharray = `${length}`;
+        element.style.strokeDashoffset = `${length}`;
+
+        // === LIGHTNING FAST SPEED ADJUSTMENTS HERE ===
+        element.animate([
+          { strokeDashoffset: length },
+          { strokeDashoffset: 0 }
+        ], {
+          duration: 300, 
+          delay: index * 6, 
+          fill: 'forwards',
+          easing: 'ease-out' 
+        });
+      });
+    }, 50); 
+
+    return () => clearTimeout(timer);
+  }, [hasAnimated]);
+
   // Functions to handle arrow clicks
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) => 
@@ -46,11 +107,36 @@ const HomeThree: React.FC = () => {
   return (
     <div className="w-full flex flex-col">
       
+      <style>{`
+        .footer-building-svg {
+          display: block;
+        }
+
+        /* Specifically increasing stroke thickness without forcing fill to none */
+        .footer-building-svg path, 
+        .footer-building-svg line, 
+        .footer-building-svg rect,
+        .footer-building-svg polyline,
+        .footer-building-svg polygon,
+        .footer-building-svg circle {
+           stroke-width: 1.5px !important; /* Increase this to 2px if you want thicker lines */
+        }
+
+        .footer-building-svg:not(.animated) path,
+        .footer-building-svg:not(.animated) line,
+        .footer-building-svg:not(.animated) rect,
+        .footer-building-svg:not(.animated) polyline,
+        .footer-building-svg:not(.animated) polygon,
+        .footer-building-svg:not(.animated) circle {
+           stroke-dasharray: 5000;
+           stroke-dashoffset: 5000;
+        }
+      `}</style>
+
       {/* ===== TESTIMONIALS SECTION ===== */}
       <section className="relative w-full bg-[#F2F1EE] py-24 px-6 md:px-16 lg:px-24 overflow-hidden min-h-[80vh] flex flex-col justify-center border-t border-[#D8D8D8]">
         
-        {/* Background Vertical Grid Lines - SYNCHRONIZED WITH CONTENT GRID */}
-        {/* Updated to max-w-8xl to match the wider section design */}
+        {/* Background Vertical Grid Lines */}
         <div className="absolute inset-0 z-0 flex items-center justify-center px-6 md:px-16 lg:px-24 pointer-events-none">
           <div className="w-full max-w-8xl h-full flex justify-between">
             <div className="w-[1px] h-full bg-[#D8D8D8]"></div>
@@ -60,22 +146,17 @@ const HomeThree: React.FC = () => {
           </div>
         </div>
 
-        {/* Updated to max-w-8xl to sync with the background lines */}
         <div className="relative z-10 w-full max-w-8xl mx-auto">
           {/* Section Title */}
-          {/* APPLIED GLOBAL: font-grotesk */}
           <h2 className="text-4xl md:text-[2.75rem] font-grotesk font-medium text-black mb-10 tracking-tight">
             Testimonials
           </h2>
 
-          {/* Testimonial Card */}
-          {/* lg:w-2/3 perfectly aligns the right edge to the 3rd vertical line in a 3-column grid */}
-          <div className="bg-white p-10 md:p-14 lg:p-16 shadow-sm w-full lg:w-2/3 mb-10 border border-[#E5E5E5] min-h-[300px] flex flex-col justify-between transition-all duration-500 ease-in-out">
-            {/* APPLIED GLOBAL: font-jakarta */}
+          {/* Testimonial Card - Fixed Height applied here */}
+          <div className="bg-white p-10 md:p-14 lg:p-16 shadow-sm w-full lg:w-2/3 mb-10 border border-[#E5E5E5] h-[380px] md:h-[320px] lg:h-[300px] flex flex-col justify-between transition-all duration-500 ease-in-out overflow-hidden">
             <p className="text-[#666666] text-[15px] md:text-base leading-[1.8] font-light mb-12 font-jakarta">
               {testimonialsData[currentIndex].text}
             </p>
-            {/* APPLIED GLOBAL: font-jakarta */}
             <p className="text-black font-semibold text-base font-jakarta">
               {testimonialsData[currentIndex].name}
             </p>
@@ -83,7 +164,6 @@ const HomeThree: React.FC = () => {
 
           {/* Navigation Arrows */}
           <div className="flex items-center gap-4">
-            {/* Previous Arrow */}
             <button 
               onClick={handlePrevClick}
               className="w-12 h-12 rounded-full border border-gray-300 bg-white flex items-center justify-center text-gray-400 hover:bg-gray-50 transition-colors duration-300 focus:outline-none"
@@ -92,7 +172,6 @@ const HomeThree: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
               </svg>
             </button>
-            {/* Next Arrow */}
             <button 
               onClick={handleNextClick}
               className="w-12 h-12 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors duration-300 focus:outline-none shadow-md"
@@ -108,41 +187,38 @@ const HomeThree: React.FC = () => {
       {/* ===== FOOTER SECTION ===== */}
       <footer className="w-full bg-[#000000] text-white flex flex-col relative overflow-hidden font-sans">
         
-        {/* Top Half: CTA & Building Illustration */}
-        <div className="relative w-full px-6 md:px-16 lg:px-24 pt-20 pb-0 lg:pt-28 flex flex-col lg:flex-row items-end justify-between border-b border-[#222222]">
+        {/* Top Half: CTA & Building Illustration - Removed the border-b from here! */}
+        <div className="relative w-full px-6 md:px-16 lg:px-24 pt-20 pb-0 lg:pt-28 flex flex-col lg:flex-row items-end justify-between">
           
           {/* Left Side: Text & Button */}
-          {/* Adjusted to 40% width to match design proportions */}
           <div className="relative z-10 w-full lg:w-[40%] flex flex-col items-start pb-16 lg:pb-24 shrink-0">
-            {/* APPLIED GLOBAL: font-garamond and text-[#FFFFFF] explicitly */}
             <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-garamond font-normal text-[#FFFFFF] mb-8 leading-tight tracking-wide">
               Ready to transform<br />your space?
             </h2>
-            {/* APPLIED GLOBAL: Garamond Regular via font-normal, and text-[#FFFFFF] explicitly */}
-            <button className="bg-[#007b80] hover:bg-[#006064] text-[#FFFFFF] font-garamond font-normal text-lg tracking-wide py-3 px-8 rounded-sm transition-all duration-300 flex items-center group">
+            <Link to="/contact" className="bg-[#007b80] hover:bg-[#006064] text-[#FFFFFF] font-garamond font-normal text-lg tracking-wide py-3 px-8 rounded-sm transition-all duration-300 flex items-center group w-fit">
               Contact Now 
               <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </button>
+            </Link>
           </div>
 
-          {/* Right Side: Building Illustration placed on the baseline */}
-          {/* Significantly reduced max-width to 500px to scale down the height */}
-          <div className="relative z-0 w-full lg:w-[60%] flex justify-center lg:justify-end items-end h-full mt-10 lg:mt-0">
-            <img 
-              src={footerBuilder} 
-              alt="City Skyline Wireframe" 
-              className="w-full max-w-[900px] object-contain object-bottom translate-y-[1px]" 
+          {/* Right Side: Building Illustration Container attached to Ref */}
+          <div 
+            ref={footerSvgContainerRef} 
+            className="relative z-0 w-full lg:w-[60%] flex justify-end items-end h-full mt-10 lg:mt-0"
+          >
+            {/* The SVG Component - Increased Width and Origin */}
+            <FooterBuilding 
+              className={`footer-building-svg w-full lg:w-[130%] object-contain object-bottom translate-y-[1px] transform origin-bottom-right opacity-70 ${hasAnimated ? 'animated' : ''}`}
             />
           </div>
         </div>
 
-        {/* Middle Half: Logo, Description & Socials */}
-        <div className="w-full px-6 md:px-16 lg:px-24 py-16 flex flex-col md:flex-row items-start md:items-center justify-between border-b border-[#222222]">
+        {/* Middle Half: Logo, Description & Socials - Added border-t here to properly separate sections */}
+        <div className="w-full px-6 md:px-16 lg:px-24 py-16 flex flex-col md:flex-row items-start md:items-center justify-between border-t border-b border-[#222222]">
           
           {/* Logo & Text Block */}
           <div className="flex flex-col items-start max-w-md mb-10 md:mb-0">
             <img src={logo} alt="BLEND Logo" className="h-8 md:h-10 mb-6 object-contain" />
-            {/* APPLIED GLOBAL: font-jakarta */}
             <p className="text-[#FFFFFF] text-[15px] leading-relaxed font-light font-jakarta">
               Discover Inspired Architectural Solutions Tailored to Your Unique Style and Needs.
             </p>
@@ -164,7 +240,6 @@ const HomeThree: React.FC = () => {
 
         {/* Bottom Half: Copyright Area */}
         <div className="w-full py-8 flex items-center justify-center bg-black">
-          {/* APPLIED GLOBAL: font-jakarta */}
           <p className="text-[#555555] text-sm font-light tracking-wide font-jakarta">
             © 2026 Blend Builds. All rights reserved.
           </p>

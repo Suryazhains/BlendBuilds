@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 // Image Imports
 import about from '../assets/AboutusBack.png';
@@ -9,9 +9,86 @@ import portfolio3 from '../assets/AboutusBack.png';
 // Import HomeThree (Ensure the actual file on your disk is named exactly HomeThree.tsx)
 import HomeThree from './Homethree';
 
+// Custom Number Counter Animation Component
+interface AnimatedCounterProps {
+  end: number;
+  duration?: number;
+  suffix?: string;
+}
+
+const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ end, duration = 2000, suffix = "" }) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const counterRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (counterRef.current) {
+      observer.observe(counterRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTimestamp: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      
+      // Using easeOut effect for smooth slow-down at the end
+      const easeOutProgress = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easeOutProgress * end));
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        setCount(end); // Ensure it ends exactly on the target number
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  }, [isVisible, end, duration]);
+
+  return <span ref={counterRef}>{count}{suffix}</span>;
+};
+
 const HomeTwo: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const autoScrollTimer = useRef<number | null>(null);
+
+  // Intersection Observer for About Us slide animation
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const aboutRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAboutVisible(true);
+          observer.disconnect(); 
+        }
+      },
+      { threshold: 0.2 } // Triggers when 20% of the section is visible
+    );
+
+    if (aboutRef.current) {
+      observer.observe(aboutRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // START AUTO SCROLL
   const startAutoScroll = () => {
@@ -96,22 +173,22 @@ const HomeTwo: React.FC = () => {
         </div>
 
         {/* Main Content Container */}
-        <section id="about" className="px-6 md:px-16 lg:px-24 pt-24 lg:pt-32 relative z-10">
+        <section id="about" className="px-6 md:px-16 lg:px-24 pt-24 lg:pt-32 relative z-10 overflow-hidden">
           
-          {/* Top Part: Image and Text Box */}
-          <div className="relative flex flex-col lg:flex-row items-center justify-start mb-8 lg:mb-10">
+          {/* Top Part: Image and Text Box (Added ref and merge animations) */}
+          <div ref={aboutRef} className="relative flex flex-col lg:flex-row items-center justify-start mb-8 lg:mb-10">
             
-            {/* Image Container */}
-            <div className="w-full lg:w-[65%] relative z-0">
+            {/* Image Container (Slides in from the Left) */}
+            <div className={`w-full lg:w-[65%] relative z-0 transform transition-all duration-1000 ease-out ${aboutVisible ? 'translate-x-0 opacity-100' : '-translate-x-32 opacity-0'}`}>
               <img 
                 src={about} 
                 alt="About Us Architecture" 
-                className="w-full h-[300px] md:h-[450px] lg:h-[600px] object-cover"
+                className="w-full h-[270px] md:h-[451px] lg:h-[500px] object-cover"
               />
             </div>
 
-            {/* Overlapping White Text Box */}
-            <div className="w-full lg:w-[75%] xl:w-[70%] lg:absolute lg:right-0 lg:top-[18%] bg-white p-12 md:p-20 lg:p-24 z-10 mt-[-40px] lg:mt-0 shadow-sm border border-gray-100">
+            {/* Overlapping White Text Box (Slides in from the Right) */}
+            <div className={`w-full lg:w-[75%] xl:w-[70%] lg:absolute lg:right-0 lg:top-[15%] bg-white p-12 md:p-20 lg:p-24 z-10 mt-[-40px] lg:mt-0 shadow-sm border border-gray-100 transform transition-all duration-1000 delay-300 ease-out ${aboutVisible ? 'translate-x-0 opacity-100' : 'translate-x-32 opacity-0'}`}>
               <h2 className="text-3xl md:text-5xl font-grotesk mb-6 text-black">
                 About Us
               </h2>
@@ -125,18 +202,24 @@ const HomeTwo: React.FC = () => {
 
           </div>
 
-          {/* Bottom Part: Stats Grid */}
+          {/* Bottom Part: Stats Grid (Added number count animations) */}
           <div className="grid grid-cols-1 sm:grid-cols-3 text-center relative z-10">
             <div className="flex flex-col items-center justify-center py-10 lg:py-12">
-              <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">3000+</h3>
+              <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">
+                <AnimatedCounter end={3000} duration={2500} suffix="+" />
+              </h3>
               <p className="text-gray-400 text-sm tracking-wide font-jakarta">Successful Projects</p>
             </div>
             <div className="flex flex-col items-center justify-center py-10 lg:py-12">
-              <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">2500+</h3>
+              <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">
+                <AnimatedCounter end={2500} duration={2500} suffix="+" />
+              </h3>
               <p className="text-gray-400 text-sm tracking-wide font-jakarta">Happy Clients</p>
             </div>
             <div className="flex flex-col items-center justify-center py-10 lg:py-12">
-              <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">100%</h3>
+              <h3 className="text-4xl md:text-[44px] font-grotesk font-medium mb-3 text-black">
+                <AnimatedCounter end={100} duration={2500} suffix="%" />
+              </h3>
               <p className="text-gray-400 text-sm tracking-wide font-jakarta">Clients Satisfactions</p>
             </div>
           </div>
